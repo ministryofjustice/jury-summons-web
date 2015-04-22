@@ -1,0 +1,23 @@
+*.pyc
+
+.DS_Store
+
+# node
+node_modules/
+npm-debug.log
+
+# bower packages
+.sass-cache/
+generated/
+
+# gulp temp folder
+.gulptmp
+
+# IDEs
+*.sublime-project
+*.sublime-workspace
+
+# virtualenvs
+venv/
+env/
+
