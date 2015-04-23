@@ -1,7 +1,14 @@
 machine:
   python:
-    3.4.2
+    version: 3.4.2
 
 dependencies:
   pre:
     - pip install --upgrade pip
+
+test:
+  pre:
+    - pip install flake8
+  override:
+    - flake8 --exclude=.svn,CVS,.bzr,.hg,.git,__pycache__,node_modules,venv,env .
+    - python manage.py test
