@@ -1,4 +1,4 @@
 # Place your development dependencies here
 -r base.txt
-behave
-splinter
+
+splinter==0.7.2
