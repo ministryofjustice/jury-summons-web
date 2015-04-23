@@ -1,23 +1,30 @@
 *.pyc
+include/
+lib/
+staticfiles/
+media/
+.build
 
-.DS_Store
+# Sass-cache
+*.sass-cache/
 
-# node
-node_modules/
-npm-debug.log
+# sqlite3 db
+*.db
+*.sqlite3
 
-# bower packages
-.sass-cache/
-generated/
-
-# gulp temp folder
-.gulptmp
-
-# IDEs
-*.sublime-project
+# sublime stuff
 *.sublime-workspace
 
-# virtualenvs
+# Virtual env
 venv/
-env/
 
+# Mac crap
+*.DS_Store
+
+# Ignore settings/local.py
+*/settings/local.py
+
+# Node Stuff
+node_modules
+
+assets-src/bower

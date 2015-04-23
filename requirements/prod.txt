@@ -1,0 +1,7 @@
+# Place your production dependencies here
+-r base.txt
+
+waitress
+psycopg2
+dj-database-url
+
