@@ -1,0 +1,7 @@
+machine:
+  python:
+    3.4.2
+
+dependencies:
+  pre:
+    - pip install --upgrade pip
