@@ -8,7 +8,7 @@ import os
 import dj_database_url
 
 
-from jury_summons.settings.base import *
+from jury_summons.settings.base import *  # noqa
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY')
@@ -22,7 +22,6 @@ ALLOWED_HOSTS = ['.herokuapp.com']
 
 # Honor the 'X-Forwarded-Proto' header for request.is_secure()
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
-
 
 
 # Parse database configuration from $DATABASE_URL

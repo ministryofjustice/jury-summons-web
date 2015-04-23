@@ -127,14 +127,12 @@ DATABASES = {
         'NAME': 'jury_summons',
         'USER': os.environ.get('POSTGRES_USER', 'postgres'),
         'PASSWORD': os.environ.get('POSTGRES_PASSWORD', ''),
-        'HOST': os.environ.get('POSTGRES_HOST',''),                      # Empty for localhost through domain sockets or '127.0.0.1' for localhost through TCP.
-        'PORT': os.environ.get('POSTGRES_PORT',''),                      # Set to empty string for default.
+        'HOST': os.environ.get('POSTGRES_HOST', ''),                      # Empty for localhost through domain sockets or '127.0.0.1' for localhost through TCP.
+        'PORT': os.environ.get('POSTGRES_PORT', ''),                      # Set to empty string for default.
     }
 }
 
-
-
 try:
-    from .local import *
+    from .local import *  # noqa
 except ImportError:
     pass
