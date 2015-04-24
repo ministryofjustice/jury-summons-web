@@ -11,5 +11,5 @@ test:
     - pip install flake8
   override:
     - flake8  .
-    - gulp lint-ci
+    - ./node_modules/.bin/gulp lint-ci
     - python manage.py test
