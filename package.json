@@ -27,9 +27,7 @@
     "del": "^0.1.3",
     "yargs": "^1.3.2",
     "lodash": "^2.4.1",
-    "bower": "latest"
-  },
-  "devDependencies": {
+    "bower": "latest",
     "gulp-if": "^1.2.5"
   }
 }
