@@ -39,9 +39,9 @@ $ docker-compose build
 All the bower/npm/django commands should be run in docker.
 You can do that by using `docker compose run <service (e.g. django)> command`
 
-* set up npm: `docker compose run django npm install`
-* set up bower: `docker compose run django bower install --allow-root`
-* set up django: `docker compose run django python manage.py migrate`
+* set up npm: `docker-compose run django npm install`
+* set up bower: `docker-compose run django bower install --allow-root`
+* set up django: `docker-compose run django python manage.py migrate`
 
 Start it up:
 
