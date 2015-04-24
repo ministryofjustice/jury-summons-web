@@ -17,7 +17,7 @@ dbdata:
 django:
   build: .
   command: python manage.py runserver 0.0.0.0:8000
-  volumes: 
+  volumes:
     - .:/app
   ports:
     - "8000:8000"
@@ -32,7 +32,7 @@ django:
 djangogulpserve:
   build: .
   command: /bin/bash -c "gulp serve --host=$DJANGO_1_PORT_8000_TCP_ADDR --port=$TESTMOJDJANGO_DJANGO_1_PORT_8000_TCP_PORT"
-  volumes: 
+  volumes:
     - .:/app
   ports:
     - "3000:3000"
