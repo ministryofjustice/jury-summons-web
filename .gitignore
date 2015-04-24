@@ -4,6 +4,7 @@ lib/
 staticfiles/
 media/
 .build
+jury_summons/assets/
 
 # Sass-cache
 *.sass-cache/
