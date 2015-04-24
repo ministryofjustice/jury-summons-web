@@ -48,3 +48,5 @@ Start it up:
 ```
 $ docker-compose up
 ```
+
+The app will be available on the boot2docker address (probably http://192.168.59.103:8000/), get it with `boot2docker ip`.

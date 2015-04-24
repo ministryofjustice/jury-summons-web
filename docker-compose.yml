@@ -4,6 +4,8 @@ db:
     - dbdata
   volumes_from:
     - dbdata
+  ports:
+    - "5433:5432"
   environment:
     POSTGRES_USER: postgres
     POSTGRES_PASSWORD: postgres
