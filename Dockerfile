@@ -10,8 +10,8 @@ RUN add-apt-repository -y ppa:chris-lea/node.js
 
 RUN apt-get update && \
     apt-get install -y \
-        build-essential git python3-all python3-all-dev python3-setuptools \
-        supervisor curl nginx libpq-dev ntp ruby ruby-dev nodejs python3-pip
+        build-essential git python3-all python3-all-dev python3-setuptools python3-pip \
+        curl nginx libpq-dev ntp ruby ruby-dev nodejs
 RUN service nginx stop && rm /etc/init.d/nginx
 
 RUN update-alternatives --install /usr/bin/python python /usr/bin/python3 10
@@ -29,11 +29,15 @@ ADD ./conf/nginx/sites-enabled /etc/nginx/sites-enabled
 ADD ./conf/supervisor /etc/supervisor
 
 ADD ./requirements/ /app/requirements/
-RUN pip3 install -r requirements/dev.txt
+RUN pip3 install -r requirements/base.txt
+RUN pip3 install uWSGI==2.0.10
+RUN pip3 install git+git://github.com/Supervisor/supervisor.git@9b3f4d3afec4611450268e50e59944b3dd7b8f2a#egg=supervisor-dev
+
+RUN mkdir -p /var/log/supervisor /var/log/wsgi
 
 ADD . /app
 RUN bower install --allow-root
 
 EXPOSE 80
 EXPOSE 443
-CMD ["supervisord", "-n"]
+CMD ["supervisord", "-n", "-c", "/etc/supervisor/supervisord.conf"]
