@@ -17,7 +17,7 @@ dbdata:
     - /var/lib/postgresql/data
 
 django:
-  build: .
+  image: dockerception
   command: python manage.py runserver 0.0.0.0:8000
   volumes:
     - .:/app
@@ -32,7 +32,7 @@ django:
     POSTGRES_PORT: 5432
 
 djangogulpserve:
-  build: .
+  build: builder
   command: /bin/bash -c "gulp serve --host=$DJANGO_1_PORT_8000_TCP_ADDR --port=$TESTMOJDJANGO_DJANGO_1_PORT_8000_TCP_PORT"
   volumes:
     - .:/app

@@ -1,0 +1,12 @@
+node_modules
+.git
+.sass-cache
+*/*.pyc
+*/*/*.pyc
+# Virtual env
+venv/
+wheels/
+# Mac crap
+*.DS_Store
+jury_summons/assets/
+
