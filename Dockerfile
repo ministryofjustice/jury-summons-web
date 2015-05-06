@@ -8,8 +8,10 @@ RUN apt-get update && \
     apt-get install -y software-properties-common python-software-properties \
         python3 python3-pip
 
-RUN add-apt-repository -y ppa:chris-lea/node.js
-RUN apt-get update && apt-get install -y \
+RUN add-apt-repository -y ppa:chris-lea/node.js && \
+    apt-get update -o Dir::Etc::sourcelist="sources.list.d/chris-lea-node_js-trusty.list" \
+            -o Dir::Etc::sourceparts="-" -o APT::Get::List-Cleanup="0" \
+    && apt-get install -y \
         build-essential git python3-dev python3-setuptools \
         curl libpq-dev ruby nodejs python3-pip
 
