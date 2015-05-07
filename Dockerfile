@@ -2,42 +2,42 @@ FROM ubuntu:trusty
 
 RUN echo "Europe/London" > /etc/timezone  &&  dpkg-reconfigure -f noninteractive tzdata
 
-RUN apt-get update && \
-    apt-get install -y software-properties-common python-software-properties
-
-RUN add-apt-repository -y ppa:nginx/stable
-RUN add-apt-repository -y ppa:chris-lea/node.js
+RUN sed -i "s/http:\/\/archive/http:\/\/gb.archive/g" /etc/apt/sources.list
 
 RUN apt-get update && \
-    apt-get install -y \
-        build-essential git python3-all python3-all-dev python3-setuptools python3-pip \
-        curl nginx libpq-dev ntp ruby ruby-dev nodejs
-RUN service nginx stop && rm /etc/init.d/nginx
+    apt-get install -y software-properties-common python-software-properties \
+        python3 python3-pip
+
+RUN add-apt-repository -y ppa:chris-lea/node.js && \
+    apt-get update -o Dir::Etc::sourcelist="sources.list.d/chris-lea-node_js-trusty.list" \
+            -o Dir::Etc::sourceparts="-" -o APT::Get::List-Cleanup="0" \
+    && apt-get install -y \
+        build-essential git python3-dev python3-setuptools \
+        curl libpq-dev ruby nodejs python3-pip
 
 RUN update-alternatives --install /usr/bin/python python /usr/bin/python3 10
 
 WORKDIR /app
 
-RUN gem update rdoc
 RUN npm install -g bower gulp
-RUN gem install sass
+RUN gem install sass --no-ri --no-rdoc
 
-ADD ./conf/uwsgi /etc/uwsgi
+COPY ./requirements/ /app/requirements/
+ENV PIP_DOWNLOAD_CACHE ./pip_download_cache
+RUN pip3 install -r requirements/dev.txt
+RUN pip3 wheel --wheel-dir=./wheels -r ./requirements/prod.txt
 
-ADD ./conf/nginx/nginx.conf /etc/nginx/nginx.conf
-ADD ./conf/nginx/sites-enabled /etc/nginx/sites-enabled
-ADD ./conf/supervisor /etc/supervisor
+COPY ./package.json /app/package.json
+RUN npm install
 
-ADD ./requirements/ /app/requirements/
-RUN pip3 install -r requirements/base.txt
-RUN pip3 install uWSGI==2.0.10
-RUN pip3 install git+git://github.com/Supervisor/supervisor.git@9b3f4d3afec4611450268e50e59944b3dd7b8f2a#egg=supervisor-dev
-
-RUN mkdir -p /var/log/supervisor /var/log/wsgi
-
-ADD . /app
+COPY . /app
 RUN bower install --allow-root
+RUN ./node_modules/.bin/gulp build
 
-EXPOSE 80
-EXPOSE 443
-CMD ["supervisord", "-n", "-c", "/etc/supervisor/supervisord.conf"]
+# don't need asset-src anymore
+RUN rm -rf ./node_modules && rm -rf ./jury_summons/assets-src/ && rm -rf ./pip_download_cache/
+
+COPY ./Dockerfile.runtime ./Dockerfile
+
+# Export the context & runtime docker file
+CMD tar -cf - .
