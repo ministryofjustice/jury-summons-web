@@ -144,6 +144,7 @@ CELERY_MESSAGE_COMPRESSION = 'gzip' # got to look after the pennies
 CELERY_DISABLE_RATE_LIMITS = True # they don't work with SQS
 CELERY_ENABLE_REMOTE_CONTROL = False # doesn't work well under docker
 CELERY_ALWAYS_EAGER = True
+CELERY_CREATE_DIRS=1
 
 try:
     from .local import *  # noqa
