@@ -9,10 +9,7 @@ RUN apt-get update && \
     apt-get install -y software-properties-common python-software-properties \
         python3 python3-pip
 
-RUN add-apt-repository -y ppa:nginx/stable \
-       && apt-get update -o Dir::Etc::sourcelist="sources.list.d/nginx-stable-trusty.list" \
-            -o Dir::Etc::sourceparts="-" -o APT::Get::List-Cleanup="0" && \
-        apt-get install -y supervisor curl ntp libpq5 python2.7-minimal
+RUN apt-get install -y supervisor curl ntp libpq5 python2.7-minimal
 
 
 RUN update-alternatives --install /usr/bin/python python /usr/bin/python3 10
