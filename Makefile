@@ -8,6 +8,6 @@ build-images:
 	docker build -t quay.io/r4vi/jsum-worker -f docker/worker/Dockerfile .
 
 push-images: build-images
-	docker push quay.io/r4vi/jsum-base
-	docker push quay.io/r4vi/jsum-web
-	docker push quay.io/r4vi/jsum-worker
+	docker push quay.io/r4vi/jsum-base:$(GIT_SHA)
+	docker push quay.io/r4vi/jsum-web:$(GIT_SHA)
+	docker push quay.io/r4vi/jsum-worker:$(GIT_SHA)
