@@ -1,4 +1,4 @@
-FROM quay.io/r4vi/jsum-base
+FROM quay.io/r4vi/jsum-base:latest
 
 
 RUN add-apt-repository -y ppa:nginx/stable \
