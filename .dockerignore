@@ -10,3 +10,5 @@ wheels/
 *.DS_Store
 jury_summons/assets/
 
+
+jury_summons/settings/local.py
