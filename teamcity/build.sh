@@ -21,4 +21,4 @@ while getopts "u:p:e:t:" optname
 
 docker login --username="$username" --password="$password" --email="$email" quay.io
 
-GIT_SHA="$tag" make push-images
+make push-images git_sha=$tag
