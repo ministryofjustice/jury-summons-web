@@ -3,11 +3,11 @@
 default: build-images
 
 build-images:
-	docker build -t builder . && docker run builder | docker build -t quay.io/r4vi/jsum-base -
-	docker build -t quay.io/r4vi/jsum-web -f docker/web/Dockerfile .
-	docker build -t quay.io/r4vi/jsum-worker -f docker/worker/Dockerfile .
+	docker build -t builder . && docker run builder | docker build -t quay.io/kerin/jsum-base:$(GIT_SHA) -
+	docker build -t quay.io/kerin/jsum-web:$(GIT_SHA) -f docker/web/Dockerfile .
+	docker build -t quay.io/kerin/jsum-worker:$(GIT_SHA) -f docker/worker/Dockerfile .
 
 push-images: build-images
-	docker push quay.io/r4vi/jsum-base
-	docker push quay.io/r4vi/jsum-web
-	docker push quay.io/r4vi/jsum-worker
+	docker push quay.io/kerin/jsum-base
+	docker push quay.io/kerin/jsum-web
+	docker push quay.io/kerin/jsum-worker
