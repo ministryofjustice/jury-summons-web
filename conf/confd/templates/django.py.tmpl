@@ -1,0 +1,27 @@
+{{$db := json (getv "/services/postgres")}}
+{{$sqs := json (getv "/services/sqs")}}
+
+import urllib
+
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': '{{$db.database}}',
+        'USER': '{{$db.username}}',
+        'PASSWORD': '{{$db.password}}',
+        'HOST': '{{$db.ipv4_addr}}',
+        'PORT': '{{$db.port}}',
+    }
+}
+
+BROKER_URL = 'sqs://{access_key}:{secret_key}@'.format(
+    access_key=urllib.quote('{{$sqs.access_key}}', safe=''),
+    secret_key=urllib.quote('{{$sqs.secret_key}}', safe='')
+
+)
+BROKER_TRANSPORT_OPTIONS = {
+    'polling_interval': 10,
+    'region': 'eu-west-1',
+    'wait_time_seconds': 20,
+    'queue_name_prefix': 'env-{{getv "/services/aws/env"}}-'
+}

@@ -1,0 +1,8 @@
+[template]
+src = "django.py.tmpl"
+dest = "/app/jury_summons/settings/local.py"
+keys = [
+    "/services/postgres",
+    "/aws/env"
+]
+reload_cmd = "supervisorctl -c /etc/supervisor/supervisord.conf restart uwsgi-jury-summons"
