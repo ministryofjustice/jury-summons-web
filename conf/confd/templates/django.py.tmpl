@@ -15,13 +15,13 @@ DATABASES = {
 }
 
 BROKER_URL = 'sqs://{access_key}:{secret_key}@'.format(
-    access_key=urllib.quote('{{$sqs.access_key}}', safe=''),
-    secret_key=urllib.quote('{{$sqs.secret_key}}', safe='')
+    access_key=urllib.parse.quote('{{$sqs.access_key}}', safe=''),
+    secret_key=urllib.parse.quote('{{$sqs.secret_key}}', safe='')
 
 )
 BROKER_TRANSPORT_OPTIONS = {
     'polling_interval': 10,
     'region': 'eu-west-1',
     'wait_time_seconds': 20,
-    'queue_name_prefix': 'env-{{getv "/services/aws/env"}}-'
+    'queue_name_prefix': 'env-{{getv "/aws/env"}}-'
 }
