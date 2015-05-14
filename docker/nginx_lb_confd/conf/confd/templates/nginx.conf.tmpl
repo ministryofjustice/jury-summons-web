@@ -1,0 +1,23 @@
+{{$private_ip := (getenv "COREOS_PRIVATE_IPV4") }}
+{{$backend_key := printf "/services/backends/%s/*" $private_ip}}
+upstream django_pool {
+{{range getvs $backend_key}}
+server {{.}};
+{{end}}
+}
+
+server {
+    listen 80 default_server;
+    listen [::]:80 default_server ipv6only=on;
+
+    access_log /var/log/nginx/access.log upstreamlog;
+
+    location / {
+        proxy_pass http://django_pool;
+        proxy_redirect off;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+    }
+}
+
