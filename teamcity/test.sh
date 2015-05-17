@@ -9,5 +9,5 @@ docker run --link=postgres:postgres -e POSTGRES_USER=postgres \
   quay.io/kerin/jsum-web:${tag} \
   /bin/bash -c "pip3 install -r requirements/test.txt && python manage.py test"
 
-docker kill $PG_ID
-docker rm $PG_ID
+echo "Killing postgres container $(docker kill $PG_ID)"
+echo "Removing postgres container $(docker rm $PG_ID)"
