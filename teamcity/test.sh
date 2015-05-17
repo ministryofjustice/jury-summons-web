@@ -5,6 +5,8 @@ set -o pipefail
 PG_ID=$(docker run -d --name postgres -e POSTGRES_USER=postgres -e \
   POSTGRES_PASSWORD=postgres postgres:9.4)
 
+sleep 5
+
 docker run --link=postgres:postgres -e POSTGRES_USER=postgres \
   -e POSTGRES_PASSWORD=postgres -e POSTGRES_PORT=5432 \
   -e POSTGRES_HOST=postgres \
