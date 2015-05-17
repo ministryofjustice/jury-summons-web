@@ -1,6 +1,6 @@
 #!/bin/bash
-docker run -d --name postgres -e POSTGRES_USER=postgres -e \
-  POSTGRES_PASSWORD=postgres postgres:9.4
+PG_ID=$(docker run -d --name postgres -e POSTGRES_USER=postgres -e \
+  POSTGRES_PASSWORD=postgres postgres:9.4)
 
 docker run --link=postgres:postgres -e POSTGRES_USER=postgres \
   -e POSTGRES_PASSWORD=postgres -e POSTGRES_PORT=5432 \
@@ -8,3 +8,6 @@ docker run --link=postgres:postgres -e POSTGRES_USER=postgres \
   -e DJANGO_SETTINGS_MODULE=jury_summons.settings.test \
   quay.io/kerin/jsum-web:${tag} \
   /bin/bash -c "pip3 install -r requirements/test.txt && python manage.py test"
+
+docker kill $PG_ID
+docker rm $PG_ID
