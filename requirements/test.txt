@@ -1,0 +1,4 @@
+# Place your test dependencies here
+-r base.txt
+
+teamcity-messages==1.13
