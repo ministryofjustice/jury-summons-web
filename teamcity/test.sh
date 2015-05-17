@@ -7,7 +7,7 @@ PG_ID=$(docker run -d --name postgres -e POSTGRES_USER=postgres -e \
 
 sleep 5
 
-docker run --link=postgres:postgres -e POSTGRES_USER=postgres \
+docker run -rm --link=postgres:postgres -e POSTGRES_USER=postgres \
   -e POSTGRES_PASSWORD=postgres -e POSTGRES_PORT=5432 \
   -e POSTGRES_HOST=postgres \
   -e DJANGO_SETTINGS_MODULE=jury_summons.settings.test \
