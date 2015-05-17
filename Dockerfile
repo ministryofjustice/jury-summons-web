@@ -27,7 +27,7 @@ RUN pip3 install -r requirements/dev.txt
 RUN pip3 wheel --wheel-dir=./wheels -r ./requirements/prod.txt
 
 COPY ./package.json /app/package.json
-RUN npm install
+RUN npm install --python=python2.7
 
 COPY . /app
 RUN bower install --allow-root
