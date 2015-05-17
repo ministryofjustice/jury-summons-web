@@ -5,15 +5,14 @@ RUN echo "Europe/London" > /etc/timezone  &&  dpkg-reconfigure -f noninteractive
 RUN sed -i "s/http:\/\/archive/http:\/\/gb.archive/g" /etc/apt/sources.list
 
 RUN apt-get update && \
-    apt-get install -y software-properties-common python-software-properties \
-        python3 python3-pip
+      apt-get install -y curl build-essential python-software-properties \
+        software-properties-common
 
-RUN add-apt-repository -y ppa:chris-lea/node.js && \
-    apt-get update -o Dir::Etc::sourcelist="sources.list.d/chris-lea-node_js-trusty.list" \
-            -o Dir::Etc::sourceparts="-" -o APT::Get::List-Cleanup="0" \
-    && apt-get install -y \
-        build-essential git python3-dev python3-setuptools \
-        curl libpq-dev ruby nodejs python3-pip
+RUN curl -sL https://deb.nodesource.com/setup_0.12 | sudo bash -
+
+RUN apt-get install -y \
+      git python3-dev python3-setuptools python3-pip python3 \
+      libpq-dev ruby nodejs libyaml-dev
 
 RUN update-alternatives --install /usr/bin/python python /usr/bin/python3 10
 
