@@ -1,4 +1,7 @@
 #!/bin/bash
+set -e
+set -o pipefail
+
 while getopts "u:p:e:t:" optname
   do
     case "$optname" in

@@ -1,4 +1,7 @@
 #!/bin/bash
+set -e
+set -o pipefail
+
 PG_ID=$(docker run -d --name postgres -e POSTGRES_USER=postgres -e \
   POSTGRES_PASSWORD=postgres postgres:9.4)
 
