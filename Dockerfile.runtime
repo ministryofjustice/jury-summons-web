@@ -6,12 +6,14 @@ RUN sed -i "s/http:\/\/archive/http:\/\/gb.archive/g" /etc/apt/sources.list
 
 RUN apt-get update && \
     apt-get install -y software-properties-common python-software-properties \
-        python3 python3-pip
+        python3 python3-pip python-pip
 
 RUN add-apt-repository -y ppa:nginx/stable \
     && apt-get update -o Dir::Etc::sourcelist="sources.list.d/nginx-stable-trusty.list" \
             -o Dir::Etc::sourceparts="-" -o APT::Get::List-Cleanup="0" && \
-    apt-get install -y supervisor curl ntp libpq5 python2.7-minimal nginx
+    apt-get install -y curl ntp libpq5 python2.7-minimal nginx
+
+RUN pip install supervisor
 
 RUN update-alternatives --install /usr/bin/python python /usr/bin/python3 10
 
@@ -51,4 +53,4 @@ RUN  mkdir -p /var/log/supervisor /var/log/wsgi && rm -rf ./wheels/ \
 EXPOSE 80
 EXPOSE 443
 
-CMD ["/usr/bin/python2", "/usr/bin/supervisord", "-n", "-c", "/etc/supervisor/roles/web.conf"]
+CMD ["/usr/bin/python2", "/usr/local/bin/supervisord", "-n", "-c", "/etc/supervisor/roles/web.conf"]
