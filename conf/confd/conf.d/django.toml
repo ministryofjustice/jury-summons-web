@@ -6,5 +6,5 @@ keys = [
     "/aws/env",
     "/services/sqs"
 ]
-reload_cmd = "python2 /usr/bin/supervisorctl -s http://localhost:9001 restart django:*"
+reload_cmd = "python2 /usr/local/bin/supervisorctl -s http://localhost:9001 restart django:*"
 
