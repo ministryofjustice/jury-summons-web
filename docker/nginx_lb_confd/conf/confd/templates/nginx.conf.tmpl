@@ -1,26 +1,66 @@
-{{$private_ip := (getenv "COREOS_PRIVATE_IPV4") }}
-{{$next_version := (getv "/services/meta/next") }}
+{{ $private_ip := (getenv "COREOS_PRIVATE_IPV4") }}
+{{ $current_version_key := "/services/meta/current" }}
+{{ $next_version_key := "/services/meta/next" }}
 
 
-{{$backend_key := printf "/services/backends/%s/%s/*" $next_version $private_ip}}
-upstream rc_django_pool {
-{{range getvs $backend_key}}
-server {{.}};
-{{end}}
+{{ if exists $next_version_key }}
+upstream next_django_pool {
+    {{ $version := (getv $next_version_key) }}
+    {{ $backend_key := printf "/services/backends/%s/%s/*" $version $private_ip }}
+
+    {{range getvs $backend_key}}
+      server {{.}};
+    {{end}}
 }
 
-
 server {
-    listen 80 default_server;
-    listen [::]:80 default_server ipv6only=on;
+    server_name {{ getv "/aws/dns/next" }};
+    listen 80;
+    listen [::]:80 ipv6only=on;
 
-    access_log /var/log/nginx/access.log upstreamlog;
+    access_log /var/log/nginx/next_access.log upstreamlog;
 
     location / {
-        proxy_pass http://rc_django_pool;
+        proxy_pass http://next_django_pool;
         proxy_redirect off;
         proxy_set_header Host $host;
         proxy_set_header X-Real-IP $remote_addr;
         proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
     }
+}
+{{end}}
+
+
+{{ if exists $current_version_key }}
+upstream current_django_pool {
+    {{ $version := (getv $current_version_key) }}
+    {{ $backend_key := printf "/services/backends/%s/%s/*" $version $private_ip }}
+
+    {{range getvs $backend_key}}
+      server {{.}};
+    {{end}}
+}
+
+server {
+    server_name {{ getv "/aws/dns/current" }};
+    listen 80;
+    listen [::]:80 ipv6only=on;
+
+    access_log /var/log/nginx/current_access.log upstreamlog;
+
+    location / {
+        proxy_pass http://current_django_pool;
+        proxy_redirect off;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+    }
+}
+{{end}}
+
+
+server {
+    listen       80  default_server;
+    server_name  _;
+    return       404;
 }

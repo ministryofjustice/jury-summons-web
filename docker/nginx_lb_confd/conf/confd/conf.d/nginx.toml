@@ -4,6 +4,7 @@ dest = "/etc/nginx/conf.d/app.conf"
 keys = [
     "/services/backends/",
     "/services/meta/",
+    "/aws/dns/",
 ]
 check_cmd = "/usr/sbin/nginx -t"
 reload_cmd = "/usr/sbin/service nginx reload"
