@@ -33,6 +33,7 @@ COPY . /app
 RUN bower install --allow-root
 RUN ./node_modules/.bin/gulp build
 
+RUN ./manage.py collectstatic --noinput
 # don't need asset-src anymore
 RUN rm -rf ./node_modules && rm -rf ./jury_summons/assets-src/ && rm -rf ./pip_download_cache/
 
