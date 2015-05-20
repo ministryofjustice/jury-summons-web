@@ -16,7 +16,8 @@ upstream next_django_pool {
 server {
     server_name {{ getv "/aws/dns/next" }};
     listen 80;
-    listen [::]:80 ipv6only=on;
+
+    add_header x-app-version {{ $version }} always;
 
     access_log /var/log/nginx/next_access.log upstreamlog;
 
@@ -44,7 +45,8 @@ upstream current_django_pool {
 server {
     server_name {{ getv "/aws/dns/current" }};
     listen 80;
-    listen [::]:80 ipv6only=on;
+
+    add_header x-app-version {{ $version }} always;
 
     access_log /var/log/nginx/current_access.log upstreamlog;
 
