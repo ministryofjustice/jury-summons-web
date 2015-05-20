@@ -9,7 +9,7 @@ server {
     client_max_body_size 5M;   # adjust to taste
 
     location /static/ {
-      alias /app/jury_summons/static/;
+      alias /app/staticfiles/;
     }
 
     location / {
