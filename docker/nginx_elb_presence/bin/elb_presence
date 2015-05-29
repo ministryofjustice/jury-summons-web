@@ -28,39 +28,45 @@ instance = urllib2.urlopen('http://169.254.169.254/latest/meta-data/instance-id'
 nginx_url = 'http://%s:8080' % urllib2.urlopen('http://169.254.169.254/latest/meta-data/local-ipv4').read()
 
 
-def deregister_func(lbname, instance):
+def deregister_func(lbname, instance, exit=False):
     def handler(*args, **kwargs):
         print "Deregistering instance {} from ELB {}".format(instance, lbname)
         conn.deregister_instances(lbname, [instance])
-        sys.exit(0)
+        if exit:
+            sys.exit(0)
     return handler
 
 
-def register_func(lbname, instance):
+def register_func(lbname, instance, exit=False):
     def handler(*args, **kwargs):
         print "Registering instance {} from ELB {}".format(instance, lbname)
         conn.register_instances(lbname, [instance])
-        sys.exit(0)
+        if exit:
+            sys.exit(0)
     return handler
 
 
 deregister = deregister_func(args.lbname, instance)
-register = deregister_func(args.lbname, instance)
+register = register_func(args.lbname, instance)
+deregister_from_signal = deregister_func(args.lbname, instance, exit=True)
 
 
 while True:
     # curl nginx
-    response = requests.head(nginx_url, headers={
-        'Host': args.current_dns
-    })
+    try:
+        response = requests.head(nginx_url, headers={
+            'Host': args.current_dns
+        }, timeout=1)
 
-    if response.headers.get('app-version'):  # if running
-        register()
-    else:
+        if response.headers.get('x-app-version'):  # if running
+            register()
+        else:
+            deregister()
+    except (requests.exceptions.Timeout, requests.exceptions.ConnectionError):
         deregister()
 
     time.sleep(5)
 
 
-signal.signal(signal.SIGTERM, deregister)
-signal.signal(signal.SIGINT, deregister)
+signal.signal(signal.SIGTERM, deregister_from_signal)
+signal.signal(signal.SIGINT, deregister_from_signal)
